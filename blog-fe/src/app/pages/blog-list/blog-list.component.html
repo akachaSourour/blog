@@ -1,0 +1,51 @@
+<div *ngIf="blogList?.length === 0 && !loading">
+  <h2 class="text-center mt-2">No data found...</h2>
+</div>
+<div *ngIf="loading">
+  <mat-spinner></mat-spinner>
+  <h3>Loading ...</h3>
+</div>
+
+<div class="container mt-2" *ngIf="blogList.length > 0 && !loading">
+  <div class="col-lg-5">
+    <mat-form-field appearance="outline" class="search-field w-100">
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="search for a gift card" [formControl]="searchFormControl">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <mat-card class="mb-2" *ngFor="let blog of blogList">
+    <mat-card-header [ngClass]="{'upVotes': blog.upVotes > blog.downVotes, 'downVotes' : blog.upVotes < blog.downVotes }">
+      <mat-card-title>{{blog.title}}</mat-card-title>
+      <mat-card-subtitle>Author : {{blog.author}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{blog.content}}...  <a (click)="showMore(blog.id)"> Read More</a>
+      </p>
+
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="upVote(blog)">
+        <mat-icon>thumb_up</mat-icon> {{blog.upVotes}}
+      </button>
+      <button mat-button (click)="downVote(blog)">
+        <mat-icon> thumb_down_off_alt</mat-icon> {{blog.downVotes}}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-paginator [length]="totalBlogs"  [pageSize]="size" (page)="pageChange($event)" aria-label="Select page">
+  </mat-paginator>
+</div>
+
+<section>
+
+      <div class="d-flex justify-content-end">
+        <button mat-fab color="warn" (click)="navigateForm()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+
+</section>
+
